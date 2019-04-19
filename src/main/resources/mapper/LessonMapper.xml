@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.LessonMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.pojo.Lesson">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="lesson_id" jdbcType="INTEGER" property="lessonId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
+    <result column="collect_num" jdbcType="INTEGER" property="collectNum" />
+    <result column="zan_num" jdbcType="INTEGER" property="zanNum" />
+  </resultMap>
+  
+  <!-- 模糊查询 -->
+  <select id="selectByParameter" parameterType="string" resultType="com.example.demo.pojo.Lesson">
+  	SELECT * FROM lesson l
+  	<where>
+  		<if test="condition !=null and condition !=''">
+  			l.title like "%"#{condition}"%" OR l.author like "%"#{condition}"%" OR l.introduce like "%"#{condition}"%"
+  		</if>
+  	</where>
+  	order by createtime desc
+  </select>
+  <sql id="Base_Column_List">
+  	lesson_id,title,author,introduce,createtime,video_url,collect_num,zan_num
+  </sql>
+  <!-- 给课程的zan_num加1 -->
+  <update id="addZan" parameterType="integer">
+        update lesson set zan_num=zan_num+1 where lesson_id=#{lessonId}
+  </update>
+  <!-- 给课程的zan_num减1 -->
+  <update id="reduceZan" parameterType="integer">
+        update lesson set zan_num=zan_num-1 where lesson_id=#{lessonId}
+  </update>
+  <!-- 查询所在课程的zan_num -->
+  <select id="getZanNum" parameterType="integer" resultType="integer">
+  	select zan_num from lesson where lesson_id=#{lessonId}
+  </select>
+  <!-- 给课程的collection_num加1 -->
+  <update id="addCollection" parameterType="integer">
+        update lesson set collect_num=collect_num+1 where lesson_id=#{lessonId}
+  </update>
+  <!-- 给课程的collection_num减1 -->
+  <update id="reduceCollection" parameterType="integer">
+        update lesson set collect_num=collect_num-1 where lesson_id=#{lessonId}
+  </update>
+  <!-- 查询所在课程的collection_num -->
+  <select id="getCollectionNum" parameterType="integer" resultType="integer">
+  	select collect_num from lesson where lesson_id=#{lessonId}
+  </select>
+  <!-- 根据课程查出作者的头像和用户名 -->
+  <select id="getAuthorBylessonId" parameterType="integer" resultType="com.example.demo.pojo.User">
+  	select username,logo from lesson l,user u where lesson_id=#{lessonId} and u.username=l.author
+  </select>
+  
+  
+</mapper>

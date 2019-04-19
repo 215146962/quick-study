@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserFriendshipMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.pojo.UserFriendship">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="friendname" jdbcType="VARCHAR" property="friendname" />
+  </resultMap>
+  
+  <select id="selectByUsername" parameterType="string" resultType="com.example.demo.pojo.User">
+  	select u.username,u.type,u.logo,u.signature,u.chatid,u.sex 
+  	from user u,user_friendship f 
+  	where f.username=#{username} and f.friendname=u.username
+  </select>
+  <select id="selectByUsernameAndFriendname" parameterType="Map" resultType="Integer">
+  	select count(*)
+  	from user_friendship 
+  	where username=#{username} and friendname=#{searchUsername}
+  </select>
+</mapper>

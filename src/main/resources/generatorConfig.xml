@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+	<properties resource="application.properties" />
+
+	<context id="MysqlContext" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+		
+		<!-- 配置pojo的序列化接口 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		
+		<!-- 自动生成的mapper都继承通用mapper -->
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<property name="mappers" value="com.example.demo.util.MyMapper" />
+		</plugin>
+		
+		<!-- 配置数据库连接，要连接了数据库才能逆向生成 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="${spring.datasource.url}" userId="${spring.datasource.username}"
+			password="${spring.datasource.password}">
+		</jdbcConnection>
+
+        <!-- 对于生成的pojo所在包，一般放在src/test/java里面，然后可以复制到src/main/java里面 -->
+		<javaModelGenerator targetPackage="com.example.demo.pojo"
+			targetProject="src/test/java" />
+
+		<!-- 对于生成的mapper所在目录，一般放在src/test/resources里面，然后可以复制到src/main/resources里面 -->
+		<sqlMapGenerator targetPackage="mapper" targetProject="src/test/resources" />
+
+		<!-- 配置mapper对应的java映射，生成继承通用mapper的mapper，集成大部分sql语句，一般放在src/test/java里面，然后可以复制到src/main/java里面 -->
+		<javaClientGenerator targetPackage="com.example.demo.mapper"
+			targetProject="src/test/java" type="XMLMAPPER" />
+
+		<!-- 需要自动生成的目标数据库表，每次写一个 -->
+		
+		<table tableName="question_zan"></table>
+		<table tableName="question"></table>
+		<!-- <table tableName="request_friendship"></table>
+		<table tableName="user"></table>
+		<table tableName="user_friendship"></table>
+		<table tableName="user_collection"></table>
+		<table tableName="lesson"></table>
+		<table tableName="lesson_img"></table>
+		<table tableName="lesson_zan"></table> -->
+
+	</context>
+</generatorConfiguration>

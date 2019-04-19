@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.QuestionMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.pojo.Question">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="question_id" jdbcType="INTEGER" property="questionId" />
+    <result column="lesson_id" jdbcType="INTEGER" property="lessonId" />
+    <result column="question_username" jdbcType="VARCHAR" property="questionUsername" />
+    <result column="question_content" jdbcType="VARCHAR" property="questionContent" />
+    <result column="answer_content" jdbcType="VARCHAR" property="answerContent" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="zan_num" jdbcType="INTEGER" property="zanNum" />
+  </resultMap>
+  <select id="selectBylessonId" parameterType="Integer" resultType="com.example.demo.pojo.Question">
+  	SELECT * FROM question where lesson_id=#{lessonId} and (answer_content is not null and trim(answer_content) not like '')
+  	order by createtime desc
+  </select>
+  <!-- 给question的zan_num加1 -->
+  <update id="addZan" parameterType="integer">
+        update question set zan_num=zan_num+1 where question_id=#{questionId}
+  </update>
+  <!-- 给question的zan_num减1 -->
+  <update id="reduceZan" parameterType="integer">
+        update question set zan_num=zan_num-1 where question_id=#{questionId}
+  </update>
+  <!-- 查询所在question的zan_num -->
+  <select id="getZanNum" parameterType="integer" resultType="integer">
+  	select zan_num from question where question_id=#{questionId}
+  </select>
+</mapper>
